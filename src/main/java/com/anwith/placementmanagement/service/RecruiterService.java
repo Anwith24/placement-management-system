@@ -20,4 +20,7 @@ public class RecruiterService {
     public List<Recruiter> getAllRecruiters() {
         return recruiterRepository.findAll();
     }
+    public Recruiter loginRecruiter(String email, String password) {
+        return recruiterRepository.findByEmailAndPassword(email, password);
+    }
 }

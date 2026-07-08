@@ -7,6 +7,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 @Controller
 public class RecruiterController {
@@ -25,5 +26,20 @@ public class RecruiterController {
 
         return "success";
     }
+    @GetMapping("/recruiter/login")
+    public String showRecruiterLogin() {
+        return "recruiter-login";
+    }
+    @PostMapping("/recruiter/login")
+    public String loginRecruiter(@RequestParam String email,
+                                 @RequestParam String password) {
 
+        Recruiter recruiter = recruiterService.loginRecruiter(email, password);
+
+        if (recruiter != null) {
+            return "recruiter-dashboard";
+        } else {
+            return "recruiter-login";
+        }
+    }
 }
