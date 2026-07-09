@@ -20,4 +20,11 @@ public class ApplicationService {
     public List<Application> getAllApplications() {
         return applicationRepository.findAll();
     }
+    public Application getApplicationById(Integer id) {
+        return applicationRepository.findById(id).orElse(null);
+    }
+
+    public void updateApplication(Application application) {
+        applicationRepository.save(application);
+    }
 }

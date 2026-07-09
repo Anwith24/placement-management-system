@@ -9,6 +9,8 @@ import org.springframework.ui.Model;
 import com.anwith.placementmanagement.entity.Job;
 import com.anwith.placementmanagement.service.JobService;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PostMapping;
 
 
 @Controller
@@ -43,6 +45,20 @@ public class ApplicationController {
         application.setStatus("Applied");
 
         applicationService.saveApplication(application);
+
+        return "redirect:/applications";
+    }
+    @GetMapping("/application/edit/{id}")
+    public String editApplication(@PathVariable Integer id, Model model) {
+
+        model.addAttribute("app", applicationService.getApplicationById(id));
+
+        return "edit-application";
+    }
+    @PostMapping("/application/update")
+    public String updateApplication(@ModelAttribute Application application) {
+
+        applicationService.updateApplication(application);
 
         return "redirect:/applications";
     }

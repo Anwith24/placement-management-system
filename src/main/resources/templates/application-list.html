@@ -22,6 +22,7 @@
             <th>Job Title</th>
             <th>Company</th>
             <th>Status</th>
+            <th>Action</th>
         </tr>
         </thead>
 
@@ -35,6 +36,12 @@
             <td th:text="${app.jobTitle}"></td>
             <td th:text="${app.companyName}"></td>
             <td th:text="${app.status}"></td>
+            <td>
+                <a th:href="@{/application/edit/{id}(id=${app.id})}"
+                   class="btn btn-warning btn-sm">
+                    Update Status
+                </a>
+            </td>
 
         </tr>
 
