@@ -10,6 +10,10 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.ui.Model;
 import java.util.List;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.PostMapping;
+import jakarta.servlet.http.HttpSession;
+
 
 @Controller
 public class StudentController {
@@ -58,5 +62,34 @@ public class StudentController {
         studentService.saveStudent(student);
 
         return "redirect:/students";
+    }
+    @GetMapping("/student/login")
+    public String showStudentLogin() {
+        return "student-login";
+    }
+
+    @PostMapping("/student/login")
+    public String loginStudent(@RequestParam String email,
+                               @RequestParam String password,
+                               HttpSession session) {
+
+        student student = studentService.loginStudent(email, password);
+
+        if (student != null) {
+
+            session.setAttribute("loggedInStudent", student);
+
+            return "student-dashboard";
+        } else {
+
+            return "student-login";
+        }
+    }
+    @GetMapping("/student/logout")
+    public String studentLogout(HttpSession session) {
+
+        session.invalidate();
+
+        return "redirect:/student/login";
     }
 }

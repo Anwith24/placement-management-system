@@ -11,6 +11,8 @@ import com.anwith.placementmanagement.service.JobService;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
+import jakarta.servlet.http.HttpSession;
+import com.anwith.placementmanagement.entity.student;
 
 
 @Controller
@@ -30,15 +32,20 @@ public class ApplicationController {
     private JobService jobService;
 
     @GetMapping("/apply/{id}")
-    public String applyForJob(@PathVariable Integer id) {
+    public String applyForJob(@PathVariable Integer id, HttpSession session) {
 
         Job job = jobService.getJobById(id);
 
+        student loggedInStudent = (student) session.getAttribute("loggedInStudent");
+
+        if (loggedInStudent == null) {
+            return "redirect:/student/login";
+        }
+
         Application application = new Application();
 
-        // Temporary student details
-        application.setStudentName("Anwith");
-        application.setStudentEmail("anwith@gmail.com");
+        application.setStudentName(loggedInStudent.getName());
+        application.setStudentEmail(loggedInStudent.getEmail());
 
         application.setJobTitle(job.getJobTitle());
         application.setCompanyName(job.getCompanyName());
@@ -46,7 +53,7 @@ public class ApplicationController {
 
         applicationService.saveApplication(application);
 
-        return "redirect:/applications";
+        return "redirect:/myApplications";
     }
     @GetMapping("/application/edit/{id}")
     public String editApplication(@PathVariable Integer id, Model model) {
@@ -61,5 +68,23 @@ public class ApplicationController {
         applicationService.updateApplication(application);
 
         return "redirect:/applications";
+    }
+    @GetMapping("/myApplications")
+    public String myApplications(HttpSession session, Model model) {
+
+        student loggedInStudent =
+                (student) session.getAttribute("loggedInStudent");
+
+        if (loggedInStudent == null) {
+            return "redirect:/student/login";
+        }
+
+        model.addAttribute(
+                "applications",
+                applicationService.getApplicationsByStudentEmail(
+                        loggedInStudent.getEmail())
+        );
+
+        return "my-applications";
     }
 }

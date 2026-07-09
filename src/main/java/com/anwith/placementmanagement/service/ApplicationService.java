@@ -27,4 +27,7 @@ public class ApplicationService {
     public void updateApplication(Application application) {
         applicationRepository.save(application);
     }
+    public List<Application> getApplicationsByStudentEmail(String email) {
+        return applicationRepository.findByStudentEmail(email);
+    }
 }
