@@ -30,4 +30,8 @@ public class ApplicationService {
     public List<Application> getApplicationsByStudentEmail(String email) {
         return applicationRepository.findByStudentEmail(email);
     }
+    public Application getApplicationByStudentAndJob(String email, String jobTitle) {
+
+        return applicationRepository.findByStudentEmailAndJobTitle(email, jobTitle);
+    }
 }

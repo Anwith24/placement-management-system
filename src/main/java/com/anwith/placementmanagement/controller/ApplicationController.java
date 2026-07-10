@@ -42,6 +42,15 @@ public class ApplicationController {
             return "redirect:/student/login";
         }
 
+        Application existingApplication =
+                applicationService.getApplicationByStudentAndJob(
+                        loggedInStudent.getEmail(),
+                        job.getJobTitle());
+
+        if (existingApplication != null) {
+            return "already-applied";
+        }
+
         Application application = new Application();
 
         application.setStudentName(loggedInStudent.getName());

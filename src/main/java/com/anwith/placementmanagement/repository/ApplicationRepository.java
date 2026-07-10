@@ -6,5 +6,6 @@ import java.util.List;
 
 public interface ApplicationRepository extends JpaRepository<Application, Integer> {
     List<Application> findByStudentEmail(String studentEmail);
+    Application findByStudentEmailAndJobTitle(String studentEmail, String jobTitle);
 
 }

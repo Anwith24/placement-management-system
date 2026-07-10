@@ -13,6 +13,7 @@ import com.anwith.placementmanagement.repository.RecruiterRepository;
 import com.anwith.placementmanagement.repository.JobRepository;
 import com.anwith.placementmanagement.repository.ApplicationRepository;
 import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.PathVariable;
 
 @Controller
 public class AdminController {
@@ -74,5 +75,53 @@ public class AdminController {
         session.invalidate();
 
         return "redirect:/admin/login";
+    }
+    @GetMapping("/admin/students")
+    public String manageStudents(Model model,
+                                 HttpSession session) {
+
+        if (session.getAttribute("loggedInAdmin") == null) {
+            return "redirect:/admin/login";
+        }
+
+        model.addAttribute("students", studentRepository.findAll());
+
+        return "admin-student-list";
+    }
+    @GetMapping("/admin/student/delete/{id}")
+    public String deleteStudent(@PathVariable Integer id,
+                                HttpSession session) {
+
+        if (session.getAttribute("loggedInAdmin") == null) {
+            return "redirect:/admin/login";
+        }
+
+        studentRepository.deleteById(id);
+
+        return "redirect:/admin/students";
+    }
+    @GetMapping("/admin/recruiters")
+    public String manageRecruiters(Model model, HttpSession session) {
+
+        if (session.getAttribute("loggedInAdmin") == null) {
+            return "redirect:/admin/login";
+        }
+
+        model.addAttribute("recruiters", recruiterRepository.findAll());
+
+        return "admin-recruiter-list";
+    }
+
+    @GetMapping("/admin/recruiter/delete/{id}")
+    public String deleteRecruiter(@PathVariable Integer id,
+                                  HttpSession session) {
+
+        if (session.getAttribute("loggedInAdmin") == null) {
+            return "redirect:/admin/login";
+        }
+
+        recruiterRepository.deleteById(id);
+
+        return "redirect:/admin/recruiters";
     }
 }
