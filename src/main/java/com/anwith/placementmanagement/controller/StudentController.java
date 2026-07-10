@@ -79,6 +79,8 @@ public class StudentController {
 
             session.setAttribute("loggedInStudent", student);
 
+            session.setAttribute("studentName", student.getName());
+
             return "student-dashboard";
         } else {
 

@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import jakarta.servlet.http.HttpSession;
 
 @Controller
 public class RecruiterController {
@@ -32,14 +33,27 @@ public class RecruiterController {
     }
     @PostMapping("/recruiter/login")
     public String loginRecruiter(@RequestParam String email,
-                                 @RequestParam String password) {
+                                 @RequestParam String password,
+                                 HttpSession session) {
 
         Recruiter recruiter = recruiterService.loginRecruiter(email, password);
 
         if (recruiter != null) {
+
+            session.setAttribute("loggedInRecruiter", recruiter);
+            session.setAttribute("recruiterName", recruiter.getRecruiterName());
+
             return "recruiter-dashboard";
         } else {
+
             return "recruiter-login";
         }
+    }
+    @GetMapping("/recruiter/logout")
+    public String recruiterLogout(HttpSession session) {
+
+        session.invalidate();
+
+        return "redirect:/recruiter/login";
     }
 }
