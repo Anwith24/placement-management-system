@@ -26,4 +26,12 @@ public class JobService {
     public Job getJobById(Integer id) {
         return jobRepository.findById(id).orElse(null);
     }
+    public List<Job> searchJobs(String keyword) {
+
+        if (keyword == null || keyword.trim().isEmpty()) {
+            return jobRepository.findAll();
+        }
+
+        return jobRepository.findByJobTitleContainingIgnoreCase(keyword);
+    }
 }

@@ -5,6 +5,8 @@ import com.anwith.placementmanagement.repository.StudentRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import java.util.List;
+import org.springframework.security.crypto.password.PasswordEncoder;
+
 
 @Service
 public class StudentService {
@@ -13,6 +15,9 @@ public class StudentService {
     private StudentRepository studentRepository;
 
     public student saveStudent(student student) {
+
+        student.setPassword(passwordEncoder.encode(student.getPassword()));
+
         return studentRepository.save(student);
     }
     public List<student> getAllStudents() {
@@ -25,6 +30,15 @@ public class StudentService {
         return studentRepository.findById(id).orElse(null);
     }
     public student loginStudent(String email, String password) {
-        return studentRepository.findByEmailAndPassword(email, password);
+
+        student stu = studentRepository.findByEmail(email);
+
+        if (stu != null && passwordEncoder.matches(password, stu.getPassword())) {
+            return stu;
+        }
+
+        return null;
     }
+    @Autowired
+    private PasswordEncoder passwordEncoder;
 }

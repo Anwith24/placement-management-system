@@ -12,6 +12,30 @@
 
     <h2 class="text-center mb-4">Available Jobs</h2>
 
+    <form action="/jobs" method="get" class="row mb-4">
+
+        <div class="col-md-8">
+            <input type="text"
+                   name="keyword"
+                   class="form-control"
+                   placeholder="Search by Job Title..."
+                   th:value="${keyword}">
+        </div>
+
+        <div class="col-md-2">
+            <button type="submit" class="btn btn-primary w-100">
+                Search
+            </button>
+        </div>
+
+        <div class="col-md-2">
+            <a href="/jobs" class="btn btn-secondary w-100">
+                Clear
+            </a>
+        </div>
+
+    </form>
+
     <table class="table table-bordered table-hover">
 
         <thead class="table-dark">

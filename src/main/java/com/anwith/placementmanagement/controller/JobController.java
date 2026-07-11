@@ -9,8 +9,9 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.PathVariable;
+import java.util.List;
+import org.springframework.web.bind.annotation.RequestParam;
+
 
 @Controller
 public class JobController {
@@ -30,12 +31,18 @@ public class JobController {
         return "success";
     }
     @GetMapping("/jobs")
-    public String viewJobs(Model model) {
+    public String viewJobs(
+            @RequestParam(required = false) String keyword,
+            Model model) {
 
-        model.addAttribute("jobs", jobService.getAllJobs());
+        List<Job> jobs = jobService.searchJobs(keyword);
+
+        model.addAttribute("jobs", jobs);
+        model.addAttribute("keyword", keyword);
 
         return "job-list";
     }
+
     @GetMapping("/job/delete/{id}")
     public String deleteJob(@PathVariable Integer id) {
 

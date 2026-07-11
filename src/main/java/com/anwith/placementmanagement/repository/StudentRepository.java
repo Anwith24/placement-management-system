@@ -4,6 +4,6 @@ import com.anwith.placementmanagement.entity.student;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface StudentRepository extends JpaRepository<student, Integer> {
-    student findByEmailAndPassword(String email, String password);
+    student findByEmail(String email);
 
 }
